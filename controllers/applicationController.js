@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Application = require('../models/applicationModel');
 const Job = require('../models/jobs')
 
@@ -7,17 +8,27 @@ exports.applyToJob = async(req, res) => {
         const applicantId = req.user.id;
 
         const exists = await Application.findOne({ job: jobId, applicant: applicantId });
-        if(exists){
-            return res.status(400).json({message: 'Already applied to the jobs'});
+        if(exists){          
+          const jobs = await Job.find();
+          return res.render('jobs', {
+            jobs,
+            message: 'You’ve already applied to this job.'
+          });
+          //return res.status(400).json({message: 'Already applied to the jobs'});
         }
 
         const application = new Application({
-            job: jobId,
-            applicant: applicantId,
+            job: new mongoose.Types.ObjectId(jobId),
+            applicant: new mongoose.Types.ObjectId(applicantId),
             coverLetter
         });
         await application.save();
-        res.status(201).json({ message: 'Application submitted successfully' });
+        const jobs = await Job.find();
+          res.render('jobs', {
+            jobs,
+            message: 'Application submitted successfully!'
+          });
+        //res.status(201).json({ message: 'Application submitted successfully' });
     }
     catch(err){
         res.status(500).json({error: err.message});
@@ -28,7 +39,8 @@ exports.getMyApplications = async(req, res) =>{
     try{
         const apps = await Application.find({applicant: req.user.id}).populate('job');
         console.log(apps[0].job);
-        res.json(apps);
+        res.render('my-applications', { apps });
+        //res.json(apps);
     }
     catch(err){
         res.status(500).json({error: err.message});
@@ -45,9 +57,15 @@ exports.getApplicationsForJob = async (req, res) => {
 
     const applications = await Application.find({ job: jobId })
       .populate('applicant', 'name email')
-      .populate('job', 'title location');
+      .populate('job', 'title location industry');
 
-    res.json(applications);
+      /*console.log('Applications:', applications.map(app => ({
+      job: app.job,
+      applicant: app.applicant,
+      })));*/
+    
+    res.render('jobApplications', { applications, jobTitle: job.title });
+    //res.json(applications);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -66,7 +84,11 @@ exports.updateApplicationStatus = async (req, res) => {
     application.status = status;
     await application.save();
 
-    res.json({ message: 'Status updated', application });
+    //const jobs = await Job.find({ postedBy: req.user.id });
+    req.session.successMessage = 'Status updated';
+    res.redirect('/employerDashboard');
+    //res.render('employerDashboard', {user: req.user, jobs, successMessage: "Status updated" });
+    //res.json({ message: 'Status updated', application });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

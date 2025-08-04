@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jobseeker Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h2 style="text-align: center;">Welcome, <%= user.name %></h2>
+
+
+    <section class="container my-5">
+      <div class="row text-center">
+
+    <!-- Search Jobs -->
+    <div class="col-md-4 mb-4">
+      <a href="/searchJobs" class="text-decoration-none">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h4 class="card-title">🔍 Search Jobs</h4>
+            <p class="card-text">Browse and filter job listings by location, role, and skills.</p>
+            <button class="btn btn-outline-primary mt-2">Explore</button>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Apply to Jobs -->
+    <div class="col-md-4 mb-4">
+      <a href="/jobs" class="text-decoration-none">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h4 class="card-title">📝 Apply to Jobs</h4>
+            <p class="card-text">Submit applications to jobs that match your preferences.</p>
+            <button class="btn btn-outline-primary mt-2">Apply</button>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- View My Applications -->
+    <div class="col-md-4 mb-4">
+      <a href="/api/applications/my" class="text-decoration-none">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h4 class="card-title">📋 My Applications</h4>
+            <p class="card-text">Track jobs you've applied to and check their status.</p>
+            <button class="btn btn-outline-primary mt-2">View</button>
+          </div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

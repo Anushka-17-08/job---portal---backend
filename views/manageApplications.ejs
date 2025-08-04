@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+ <body>
+    <h2 class="mb-4">Manage Applications</h2>
+
+ <% applications.forEach(app => { %>
+  <div class="card mb-3 shadow-sm">
+    <div class="card-body">
+      <h5><%= app.applicant.name %></h5>
+      <p>Applied for: <%= app.job.title %></p>
+      <p>Current Status: <strong><%= app.status %></strong></p>
+
+      <form action="/api/applications/<%= app._id %>/status?_method=PUT" method="POST">
+        <select name="status" class="form-control mb-2">
+          <option value="Pending" <%= app.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+          <option value="Accepted" <%= app.status === 'Accepted' ? 'selected' : '' %>>Accepted</option>
+          <option value="Rejected" <%= app.status === 'Rejected' ? 'selected' : '' %>>Rejected</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Update Status</button>
+      </form>
+    </div>
+  </div>
+  <% }) %>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+ </body>
+</html>

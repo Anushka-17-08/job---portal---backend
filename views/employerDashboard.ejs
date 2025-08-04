@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Employer Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+   
+    <% if (successMessage) { %>
+         <div id="success-alert" class="alert alert-success text-center" role="alert">
+         <%= successMessage %>
+        </div>
+    <% } %>
+
+  <h2 style="text-align: center;">Welcome, <%= user.name %></h2>
+
+  <section class="container my-5">
+    <div class="row text-center">
+
+      <!-- Create a New Job -->
+      <div class="col-md-4 mb-4">
+        <a href="/createJobs" class="text-decoration-none">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h4 class="card-title">🆕 Create Job</h4>
+              <p class="card-text">Post a new opening for candidates to apply.</p>
+              <button class="btn btn-outline-primary mt-2">Create</button>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- View Applications for Your Jobs -->
+       <% jobs.forEach(job => { %>
+        <%// console.log(`Job ID: ${job._id}, Title: ${job.title}`);%>
+
+      <div class="col-md-4 mb-4">
+        <a href="/api/applications/job/<%= job._id %>" class="text-decoration-none">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h4 class="card-title">📬 View Applications</h4>
+              <p class="card-text">Review submissions for jobs you’ve posted.</p>
+              <button class="btn btn-outline-primary mt-2">View</button>
+            </div>
+          </div>
+        </a>
+      </div>
+      <% }) %>
+
+
+      <!-- Track & Update Application Status -->
+      <div class="col-md-4 mb-4">
+        <a href="/manage" class="text-decoration-none">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h4 class="card-title">🔄 Manage Status</h4>
+              <p class="card-text">Accept or reject candidates based on application status.</p>
+              <button class="btn btn-outline-primary mt-2">Manage</button>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   <script>
+    setTimeout(() => {
+        const alert = document.getElementById('success-alert');
+        if (alert) alert.remove(); // or alert.style.display = 'none';
+        }, 2000);
+    </script>
+</body>
+</html>
